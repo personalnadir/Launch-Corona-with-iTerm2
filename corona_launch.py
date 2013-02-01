@@ -22,6 +22,12 @@ def main(directory,project):
 
 			dirs.append(project)
 			inDir=True
+
+	if inDir:
+		print ("Corona Launch: main.lua found in " + project)
+	else:
+		print ("Corona Launch: Directory named " + project + " not found in " + directory)
+	
 	
 if __name__ == '__main__':
 	directory=sys.argv[1]
