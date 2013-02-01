@@ -9,9 +9,7 @@ def main(directory,project):
 		if inDir:
 			for f in files:
 				if f=="main.lua":
-
 					command="osascript -l AppleScript itermlaunch.applescript " +os.path.join(root,f)
-					print command
 					subprocess.call(command,shell=True)
 					return
 			
@@ -24,7 +22,6 @@ def main(directory,project):
 
 			dirs.append(project)
 			inDir=True
-		print root
 	
 if __name__ == '__main__':
 	directory=sys.argv[1]
