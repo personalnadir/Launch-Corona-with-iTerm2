@@ -33,5 +33,6 @@ if __name__ == '__main__':
 	directory=sys.argv[1]
 	project=sys.argv[2]
 	assert(directory)
-	assert(project.lower())
+	assert(project)
+	project=project.lower()
 	main(directory,project)
