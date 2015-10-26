@@ -2,14 +2,15 @@ import sys
 import os
 import subprocess
 
+def main(directory,project,usePublic):
 
-def main(directory,project):
 	inDir=False
 	for root,dirs,files in os.walk(directory):
 		if inDir:
 			for f in files:
 				if f=="main.lua":
-					command="osascript -l AppleScript itermlaunch.applescript " +os.path.join(root,f)
+					coronaDir="CoronaSDK" if not usePublic else "CoronaSDKPublic"
+					command="osascript -l AppleScript itermlaunch.applescript '/Applications/"+ coronaDir+"/Corona\\ Simulator.app/Contents/MacOS/Corona\\ Simulator' '" + os.path.join(root,f) + " -no-console YES'"
 					subprocess.call(command,shell=True)
 					return
 			
@@ -32,7 +33,13 @@ def main(directory,project):
 if __name__ == '__main__':
 	directory=sys.argv[1]
 	project=sys.argv[2]
+	usePublic=False
+	if len(sys.argv)>3:
+		usePublic=sys.argv[3]=="True"
+		if usePublic:
+			print ("Corona Launch: using public build")
+	
 	assert(directory)
 	assert(project)
 	project=project.lower()
-	main(directory,project)
+	main(directory,project,usePublic)
