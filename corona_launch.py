@@ -1,11 +1,20 @@
 import sys
 import os
 import subprocess
+from os.path import expanduser
 
 def main(directory,project,usePublic):
+	if "~" in directory:
+		directory=expanduser(directory)
+
+	def pe(OSError):
+		print (OSError)
 
 	inDir=False
-	for root,dirs,files in os.walk(directory):
+	for root,dirs,files in os.walk(directory,onerror=pe):
+		if inDir and not project in root.lower():
+			inDir=False
+		print (root)
 		if inDir:
 			for f in files:
 				if f=="main.lua":
@@ -16,18 +25,17 @@ def main(directory,project,usePublic):
 			
 		if ".git" in dirs:
 			dirs.remove(".git")
-
-		if project in (d.lower() for d in dirs):
-			while len(dirs)>0:
-				dirs.pop()
-
-			dirs.append(project)
-			inDir=True
+		for i in xrange(len(dirs)):
+			if dirs[i].lower()==project:
+				del dirs[0:i]
+				del dirs[i+1:]
+				inDir=True
+				break
 
 	if inDir:
 		print ("Corona Launch: main.lua found in " + project)
 	else:
-		print ("Corona Launch: Directory named " + project + " not found in " + directory)
+		return ("Corona Launch: Directory named " + project + " not found in " + directory)
 	
 	
 if __name__ == '__main__':
